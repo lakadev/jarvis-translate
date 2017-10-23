@@ -10,15 +10,19 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
-Ask Jarvis to translate expressions.
+Ask Jarvis to translate expressions
 
 Requires a Free Microsoft Translator Subscription key (the Azure account creation needs a credit card)
-(https://www.microsoft.com/en-us/translator/getstarted.aspx)
---
+
+(see https://www.microsoft.com/en-us/translator/getstarted.aspx)
+
+---
+
 Demander à Jarvis de traduire des expressions
 
 Requiert une souscription gratuite à Microsoft Translator (gratuit, mais la création du compte Azur nécessite une carte de crédit)
-(https://www.microsoft.com/en-us/translator/getstarted.aspx)
+
+(voir https://www.microsoft.com/en-us/translator/getstarted.aspx)
 
 ## Usage
 EN
