@@ -9,9 +9,15 @@
 #      say "$(pv_myplugin_lang the_answer_is "oui")"
 #      => Jarvis: La réponse est oui
 
-#pg_XXX_lang () {
-#    case "$1" in
-#        i_check) echo "Je regarde...";;
-#        the_answer_is) echo "La réponse est $2";;
-#    esac
-#} 
+pg_translator_lang () {
+   case "$1" in
+		tr_order_regex) echo "translat[^ ]* (.*) in (.*)";;
+		tr_not_understood) echo "I did not understand what to translate.";;
+		tr_missing_key) echo "ERROR: missing Microsoft Translator api key";;
+		tr_missing_key_hint) echo "HELP: set the Microsoft Translator Key in the plugin configuration";;
+		tr_unknown_language) echo "I can't translate in this language.";;
+	    tr_thinking_phrase) echo "So, if I remember correctly...";;
+	    tr_textual_response) echo "the $3 for \"$2\" is:";;
+		tr_known_languages) echo "I can translate in $2 languages like : $3 ...";;
+   esac
+} 

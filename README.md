@@ -10,13 +10,40 @@ For multi-language plugin:
 - optionally write the Description / Usage sections in several languages
 -->
 ## Description
-Description of your Plugin
+Ask Jarvis to translate expressions.
+
+Requires a Free Microsoft Translator Subscription key (the Azure account creation needs a credit card)
+(https://www.microsoft.com/en-us/translator/getstarted.aspx)
+--
+Demander à Jarvis de traduire des expressions
+
+Requiert une souscription gratuite à Microsoft Translator (gratuit, mais la création du compte Azur nécessite une carte de crédit)
+(https://www.microsoft.com/en-us/translator/getstarted.aspx)
 
 ## Usage
+EN
 ```
-You: example of how to trigger the command
-Jarvis: output from Jarvis
+You: Translate the blue whale in spanish
+Jarvis: So, if I remember correctly...
+Jarvis: the spanish for "the blue whale" is:
+la ballena azul
+
+
+You: In which languages can you translate ?
+Jarvis: I can translate in 24 languages like : Arabic, French, Spanish...
+```
+------------------------------------------------------------------
+FR
+```
+Vous: Traduit la baleine bleue en anglais
+Jarvis: Alors, si je me souviens bien...
+Jarvis: "la baleine bleue" se dit en anglais :
+the blue whale
+
+
+Vous: En quelles langues sais-tu traduire ?
+Jarvis: Je peux traduire en 24 langues comme par exemple : Anglais, Arabe, Espagnol...
 ```
 
 ## Author
-[your name](http://your.website)
+[Lakadev](http://www.lakadev.com)

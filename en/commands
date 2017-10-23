@@ -1,1 +1,5 @@
-*HELLO WORLD*==say "Hello World"
+#Translate XXXX in YYYY
+*TRANSLAT* (*) IN (*)==echo "$(jv_pg_tr_translate)"
+
+#In which languages can you translate ?
+*WHICH* LANG* TRANSLAT*==say "$(jv_pg_tr_getExampleSpokenLanguages)" && echo "$(jv_pg_tr_getAllSpokenLanguages)"

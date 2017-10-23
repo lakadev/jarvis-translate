@@ -1,0 +1,5 @@
+#Traduis XXXX en YYYY
+*TRADU* (*) EN (*)==echo "$(jv_pg_tr_translate)"
+
+#En quelles langues sais-tu traduire ?
+*QUEL* LANG* TRADU*==say "$(jv_pg_tr_getExampleSpokenLanguages)" && echo "$(jv_pg_tr_getAllSpokenLanguages)"
