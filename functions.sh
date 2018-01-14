@@ -32,33 +32,28 @@ jv_pg_tr_translate()
 
 	#jv_debug "texte= $textToTranslate / langue= $destinationLanguage"
 	#jv_debug "key = $jv_pg_tr_ms_translator_api_key"
-    if [ -z "$jv_pg_tr_ms_translator_api_key" ]; then
+    if [[ -z "$jv_pg_tr_ms_translator_api_key" ]] || [[ "$jv_pg_tr_ms_translator_api_key" == "Your Microsoft Translator API Key" ]] ; then
         echo "" # new line
         jv_error "$(pg_translator_lang tr_missing_key)"
         jv_warning "$(pg_translator_lang tr_missing_key_hint)"
-        exit 1 # TODO doesn't really exit because launched with & forjv_spinner
+        return # TODO doesn't really exit because launched with & forjv_spinner
 	fi
 
 	# Get source language from jarvis config
 	local sourceLanguageCode="$(tr '[:upper:]' '[:lower:]' <<< ${language:0:2})" # en_GB => en => EN
 	
     # Get destination language code from plugin configuration
-	local destinationLanguageCode="??"
-	for i in "${!jv_pg_tr_spoken_languages[@]}"
-	do
-		if [ $(jv_sanitize $i) == "$destinationLanguage" ]; then
-	        destinationLanguageCode="${jv_pg_tr_spoken_languages[$i]}"
-		fi
-	done
+	local destinationLanguageCode="$(jv_pg_tr_get_language_code "$destinationLanguage")"
+	
     #jv_debug "DEBUG: destinationLanguageCode= $destinationLanguageCode"
 
 	# Check if destination is supported
 	reflexionPid=""
-	if [ "$destinationLanguageCode" == "??" ]; then
+	if [ -z "$destinationLanguageCode" ]; then
         say "$(pg_translator_lang tr_unknown_language)"
         return
     else
-        say "$(pg_translator_lang tr_thinking_phrase)" > /dev/tty  & 
+        say "$(pg_translator_lang tr_thinking_phrase)" > /dev/tty &
     	reflexionPid="$!"
 	fi
 
@@ -69,11 +64,11 @@ jv_pg_tr_translate()
     reflexionPid="$!"
     
     #jv_debug "translatedText = $translatedText"
-	local translatedSpeachUrl=$(jv_pg_tr_sendSpeakRequest "$translatedText" "$destinationLanguageCode")
-    #jv_debug "DEBUG: result : $translatedText / $reflexionPid / $translatedSpeachUrl"
+	local translatedSpeechUrl=$(jv_pg_tr_sendSpeakRequest "$translatedText" "$destinationLanguageCode")
+    #jv_debug "DEBUG: result : $translatedText / $reflexionPid / $translatedSpeechUrl"
 
     wait "$reflexionPid"
-    echo "$translatedText"  > /dev/tty 
+    echo "$translatedText" > /dev/tty
 
     if [ -s $jv_pg_tr_temp_speech_file ]
     then
@@ -116,7 +111,7 @@ jv_pg_tr_sendTextTranslateRequest()
     if (( $? )); then
         jv_error "ERROR: translation curl failed"
         jv_debug "DEBUG: $?"
-        exit 1
+        return
     fi
 
     #jv_debug "DEBUG: xml=$xml"
@@ -130,7 +125,17 @@ jv_pg_tr_sendTextTranslateRequest()
     echo "$translatedText"
 }
 
-
+# Get the language code by the language name
+jv_pg_tr_get_language_code() {
+  value=$(jv_sanitize $1)
+  for i in "${!jv_pg_tr_spoken_languages_names[@]}"; do
+      tempLang=$(jv_sanitize ${jv_pg_tr_spoken_languages_names[$i]})
+      if [[ "$tempLang" = "${value}" ]]; then
+         echo "${jv_pg_tr_spoken_languages_codes[$i]}"
+         break
+      fi
+  done
+} 
 
 # Send Text Translation request
 # No echo or Debug allowed !
@@ -138,7 +143,7 @@ jv_pg_tr_sendTextTranslateRequest()
 # $2 = "code of language to speak into"
 jv_pg_tr_sendSpeakRequest()
 {
-    #echo "jv_pg_tr_sendSpeakRequest : $1 / $2" 
+    #jv_debug "jv_pg_tr_sendSpeakRequest : $1 / $2" 
 	local textToSpeak=$1
 	local destinationLanguageCode=$2
 
@@ -154,27 +159,22 @@ jv_pg_tr_sendSpeakRequest()
 
     [ -f $jv_pg_tr_temp_speech_file ] && rm -f "$jv_pg_tr_temp_speech_file"
 
-    #local xmlSpeach="TEMP DEBUG!"
-    local xmlSpeach=`curl "$requestSpeach" \
+    #local xmlSpeech="TEMP DEBUG!"
+    local xmlSpeech=`curl "$requestSpeach" \
         -H "Host: api.microsofttranslator.com" \
         -H "Ocp-Apim-Subscription-Key: $jv_pg_tr_ms_translator_api_key" \
         --output $jv_pg_tr_temp_speech_file \
         --silent --fail`
-
-    if (( $? )); then
-        jv_error "ERROR: translation curl failed"
-        jv_debug "DEBUG: $?"
-        exit 1
-    fi
+        
 }
 
 jv_pg_tr_getAllSpokenLanguages()
 {
     # List all languages 
     languagesList=""
-    for l in "${!jv_pg_tr_spoken_languages[@]}"
+    for i in "${!jv_pg_tr_spoken_languages_names[@]}"
     do
-        languagesList="$l, $languagesList"
+        languagesList="${jv_pg_tr_spoken_languages_names[$i]}, $languagesList"
     done
 
     echo ${languagesList::-2}
@@ -184,7 +184,7 @@ jv_pg_tr_getExampleSpokenLanguages()
 {
 
     # Select 3 random index
-    nbLanguage=${#jv_pg_tr_spoken_languages[@]}
+    nbLanguage=${#jv_pg_tr_spoken_languages_names[@]}
     
     index1=$((RANDOM%$nbLanguage))
     index2=-1
@@ -204,14 +204,12 @@ jv_pg_tr_getExampleSpokenLanguages()
     done
 
     exampleLanguages=""
-    local i=0
-    for l in "${!jv_pg_tr_spoken_languages[@]}"
+    for i in "${!jv_pg_tr_spoken_languages_names[@]}"
     do
         if (( $i == $index1 || $i == $index2 || $i == $index3 ))
         then
-            exampleLanguages="$l, $exampleLanguages"
+            exampleLanguages="${jv_pg_tr_spoken_languages_names[$i]}, $exampleLanguages"
         fi
-        ((i++))
     done
 
     echo "$(pg_translator_lang tr_known_languages $nbLanguage "${exampleLanguages::-2}" )"

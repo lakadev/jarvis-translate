@@ -1,5 +1,5 @@
 #Translate XXXX in YYYY
-*TRANSLAT* (*) IN (*)==echo "$(jv_pg_tr_translate)"
+*TRANSLAT* (*) IN (*)==jv_pg_tr_translate
 
 #In which languages can you translate ?
-*WHICH* LANG* TRANSLAT*==say "$(jv_pg_tr_getExampleSpokenLanguages)" && echo "$(jv_pg_tr_getAllSpokenLanguages)"
+*WHICH* LANG* TRANSLAT*==say "$(jv_pg_tr_getExampleSpokenLanguages)" && jv_pg_tr_getAllSpokenLanguages

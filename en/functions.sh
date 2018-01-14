@@ -1,13 +1,4 @@
 #!/bin/bash
-# Here you can define translations to be used in the plugin functions file
-# the below code is an sample to be reused:
-# 1) uncomment to function below
-# 2) replace XXX by your plugin name (short)
-# 3) remove and add your own translations
-# 4) you can the arguments $2, $3 passed to this function
-# 5) in your plugin functions.sh file, use it like this:
-#      say "$(pv_myplugin_lang the_answer_is "oui")"
-#      => Jarvis: La réponse est oui
 
 pg_translator_lang () {
    case "$1" in
@@ -21,3 +12,31 @@ pg_translator_lang () {
 		tr_known_languages) echo "I can translate in $2 languages like : $3 ...";;
    esac
 } 
+
+# Spoken Language Names
+jv_pg_tr_spoken_languages_names[0]="Arabic"
+jv_pg_tr_spoken_languages_names[1]="Egyptian"
+jv_pg_tr_spoken_languages_names[2]="Catalan"
+jv_pg_tr_spoken_languages_names[3]="Danish"
+jv_pg_tr_spoken_languages_names[4]="German"
+jv_pg_tr_spoken_languages_names[5]="English"
+jv_pg_tr_spoken_languages_names[6]="Spanish"
+jv_pg_tr_spoken_languages_names[7]="Mexican"
+jv_pg_tr_spoken_languages_names[8]="Finnish"
+jv_pg_tr_spoken_languages_names[9]="French"
+jv_pg_tr_spoken_languages_names[10]="Canadian"
+jv_pg_tr_spoken_languages_names[11]="Hindi"
+jv_pg_tr_spoken_languages_names[12]="Italian"
+jv_pg_tr_spoken_languages_names[13]="Japanese"
+jv_pg_tr_spoken_languages_names[14]="Koreen"
+jv_pg_tr_spoken_languages_names[15]="Dutch"
+jv_pg_tr_spoken_languages_names[16]="Norwegian"
+jv_pg_tr_spoken_languages_names[17]="Polish"
+jv_pg_tr_spoken_languages_names[18]="Portuguese"
+jv_pg_tr_spoken_languages_names[19]="Brazilian"
+jv_pg_tr_spoken_languages_names[20]="Russian"
+jv_pg_tr_spoken_languages_names[21]="Swedish"
+jv_pg_tr_spoken_languages_names[22]="Cantonese"
+jv_pg_tr_spoken_languages_names[23]="Chinese"
+# "zh-hk" Not supported
+jv_pg_tr_spoken_languages_names[25]="Taiwanese"
